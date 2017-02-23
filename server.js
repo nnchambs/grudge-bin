@@ -8,13 +8,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('port', process.env.PORT || 3000)
+
 app.locals.title = 'Grudge-bin Server'
+app.locals.grudges = [{id: 1, name: 'Andrew Crist', offense: 'chowder', forgiven: false, date: '1974-31-01'}]
 
 app.use(express.static(path.join(__dirname, '/src')))
 
 app.get('/', (request, response) => {
   res.sendfile(__dirname + '/public/index.html')
 })
+
+
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is runnning on ${app.get('port')}`)
