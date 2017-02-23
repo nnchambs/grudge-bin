@@ -22,6 +22,10 @@ app.get('/grudges', (req, res) => {
   res.status(200).json(app.locals.grudges)
 })
 
+app.post('/api/grudges', (req, res) => {
+  app.locals.grudges.push(req.body)
+  res.status(200).json(app.locals.grudges)
+})
 
 
 app.listen(app.get('port'), () => {
