@@ -48,17 +48,26 @@ function updateCounter(grudges) {
   $('.scumbag-counter').text(counter)
 }
 
-function updateForgivenCounters(grudges) {
+function updateUnforgivenCounter(grudges) {
   let unforgiven = grudges.filter((g) => {
     if (g.forgiven !== true) return g
   })
   $('.scumbag-unforgiven-counter').text(unforgiven.length)
 }
 
+function updateForgivenCounter(grudges) {
+  let forgiven = grudges.filter((g) => {
+    if (g.forgiven === true) return g
+  })
+  let counter = forgiven.length ? forgiven.length : 0
+  $('.scumbag-forgiven-counter').text(counter)
+}
+
 function appendGrudgeList(grudges) {
   clearGrudgeList()
   updateCounter(grudges)
-  updateForgivenCounters(grudges)
+  updateUnforgivenCounter(grudges)
+  updateForgivenCounter(grudges)
   grudges.map((g) => {
     $('.grudge-list').append(`<h4>${g.name}</h4>`)
   })
