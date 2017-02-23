@@ -27,6 +27,11 @@ app.post('/api/grudges', (req, res) => {
   res.status(200).json(app.locals.grudges)
 })
 
+app.get('/scumbag/:id', (req, res) => {
+  console.log(req.params)
+  res.sendfile(__dirname + '/src/scumbag.html')
+})
+
 var server = app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is runnning on ${app.get('port')}`)
 })

@@ -8,6 +8,8 @@ class Grudge {
   }
 }
 
+const localGrudges = []
+
 //listeners
 $(document).ready(() => {
   getGrudges()
@@ -19,18 +21,36 @@ $('.grudge-submit').click('click', (e) => {
   postGrudge(newGrudge)
 })
 
+$('.sort-scumbag-by-date').click(() => {
+  sortByDate()
+})
+
+$('.sort-scumbag-by-name').click(() => {
+  sortByName()
+})
+
+$('.grudge-list').on('click', '.scumbag-name', function() {
+  routeToIndividualScumbag(this.id)
+})
+
 //functions
 function getGrudges() {
   $.get('/api/grudges', (grudges) => {
-    appendGrudgeList(grudges)
+    grudges.forEach((g) => {
+      localGrudges.push(g)
+    })
+    appendGrudgeList(localGrudges)
   })
 }
 
 function postGrudge(grudge) {
   $.post('/api/grudges', grudge, (grudges) => {
-    appendGrudgeList(grudges)
-  })
+    let newGrudge = grudges.pop()
+      localGrudges.push(newGrudge)
+    })
+  appendGrudgeList(localGrudges)
 }
+
 
 function createGrudge() {
   let name = $('.grudge-name').val()
@@ -69,6 +89,24 @@ function appendGrudgeList(grudges) {
   updateUnforgivenCounter(grudges)
   updateForgivenCounter(grudges)
   grudges.map((g) => {
-    $('.grudge-list').append(`<h4>${g.name}</h4>`)
+    $('.grudge-list').append(`<a href='/scumbag/${g.id}'><h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
+  })
+}
+
+function sortByDate() {
+  return localGrudges.sort((a, b) => {
+    return a.date > b.date
+  })
+}
+
+function sortByName() {
+  return localGrudges.sort((a, b) => {
+    return a.name.toLowerCase() > b.name.toLowerCase()
+  })
+}
+
+function routeToIndividualScumbag(id) {
+  $.get(`/scumbag/${id}`, (req, res) => {
+    console.log(res)
   })
 }
