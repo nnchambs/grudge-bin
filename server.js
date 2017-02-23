@@ -15,7 +15,7 @@ app.locals.grudges = [{id: 1, name: 'Andrew Crist', offense: 'chowder', forgiven
 app.use(express.static(path.join(__dirname, '/src')))
 
 app.get('/', (req, res) => {
-  res.sendfile(__dirname + '/public/index.html')
+  res.sendfile(__dirname + '/src/index.html')
 })
 
 app.get('/api/grudges', (req, res) => {
