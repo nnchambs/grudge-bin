@@ -4,6 +4,10 @@ $(document).ready(function(){
 
 function getGrudges() {
   $.get('/grudges', function(grudges) {
-    console.log(grudges)
+    appendGrudgeList(grudges)
   })
+}
+
+function appendGrudgeList(grudges) {
+  $('.grudge-list').append(`<p>${grudges[0].name}</p>`)
 }
