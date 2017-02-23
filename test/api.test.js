@@ -7,7 +7,7 @@ var server = require('../server.js');
 
 chai.use(chaiHttp)
 
-describe('the grudge bin routes', function() {
+describe('grudge bin routes', function() {
   it('the GET route should return grudges via app.locals.grudges', function(done) {
     chai.request(server)
     .get('/api/grudges')
@@ -15,6 +15,7 @@ describe('the grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
+      res.body.length.should.equal(1)
       done()
     })
   });
@@ -32,6 +33,7 @@ describe('the grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
+      res.body.length.should.equal(2)
       done()
     })
   });
