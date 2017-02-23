@@ -2,7 +2,7 @@
   "name": "grudge-bin",
   "version": "1.0.0",
   "description": "a bin full of morons",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "test"
   },
