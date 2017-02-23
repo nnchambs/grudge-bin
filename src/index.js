@@ -8,8 +8,6 @@ class Grudge {
   }
 }
 
-var grudge = new Grudge()
-
 //listeners
 $(document).ready(() => {
   getGrudges()
@@ -41,6 +39,27 @@ function createGrudge() {
   return new Grudge(name, description, date)
 }
 
+function clearGrudgeList() {
+  $('.grudge-list').empty()
+}
+
+function updateCounter(grudges) {
+  const counter = grudges.length
+  $('.scumbag-counter').text(counter)
+}
+
+function updateForgivenCounters(grudges) {
+  let unforgiven = grudges.filter((g) => {
+    if (g.forgiven !== true) return g
+  })
+  $('.scumbag-unforgiven-counter').text(unforgiven.length)
+}
+
 function appendGrudgeList(grudges) {
-  $('.grudge-list').append(`<p>${grudges[0].name}</p>`)
+  clearGrudgeList()
+  updateCounter(grudges)
+  updateForgivenCounters(grudges)
+  grudges.map((g) => {
+    $('.grudge-list').append(`<h4>${g.name}</h4>`)
+  })
 }
