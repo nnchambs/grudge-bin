@@ -1,3 +1,10 @@
 $(document).ready(function(){
-  console.log('hi')
+  getGrudges()
 });
+
+
+function getGrudges() {
+  $.get('/grudges', function(grudges) {
+    console.log(grudges)
+  })
+}
