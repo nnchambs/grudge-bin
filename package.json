@@ -1,0 +1,29 @@
+{
+  "name": "grudge-bin",
+  "version": "1.0.0",
+  "description": "a bin full of morons",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnchambs/grudge-bin.git"
+  },
+  "author": "Nick Chambers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nnchambs/grudge-bin/issues"
+  },
+  "homepage": "https://github.com/nnchambs/grudge-bin#readme",
+  "dependencies": {
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0",
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
