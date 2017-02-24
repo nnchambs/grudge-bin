@@ -40,7 +40,10 @@ app.patch('/api/grudge/:id', (req, res) => {
   const id = req.params.id
   const newForgiven = req.body.forgivenStatus
   app.locals.grudges = changeForgivenStatus(id, newForgiven)
-  res.status(200).json(app.locals.grudges)
+  let changedGrudge = app.locals.grudges.filter((m) => {
+    return m.id == id
+  })
+  res.status(200).json(changedGrudge)
 })
 
 function changeForgivenStatus(id, newForgiven) {

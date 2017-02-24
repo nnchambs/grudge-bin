@@ -60,19 +60,17 @@ function postGrudge(grudge) {
   })
 }
 
-// function patchForgivenStatus(id, forgivenStatus) {
-//   $.ajax(
-//     {
-//       url: `/api/grudge/${id}`,
-//       type: 'PATCH',
-//       data: {forgivenStatus: forgivenStatus},
-//       success: function(response) {
-//         response.forEach((g) => {
-//           .push(g)
-//         })
-//       }
-//   })
-// }
+function patchForgivenStatus(id, forgivenStatus) {
+  $.ajax(
+    {
+      url: `/api/grudge/${id}`,
+      type: 'PATCH',
+      data: {forgivenStatus: forgivenStatus},
+      success: function(response) {
+        findIndividualGrudge(response)
+      }
+  })
+}
 //functions
 function createGrudge() {
   let name = $('.grudge-name').val()
@@ -139,11 +137,14 @@ function appendIndividualScumbag(scumbag) {
   $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
 }
 
-function removeGrudgeFromLocalGrudges(id) {
+function findIndividualGrudge(grudge) {
+  let newGrudge = grudge.pop()
   localGrudges.map((m) => {
-    if(m.id == id) {
-      let index = localGrudges.indexOf(m)
-      return localGrudges.slice(index, 1)
+    if (newGrudge.id == m.id) {
+      m.forgiven = newGrudge.forgiven
+      return m
+    } else {
+      return m
     }
   })
 }
