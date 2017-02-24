@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
+const helpers = require('./server-helpers')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,33 +31,17 @@ app.post('/api/grudges', (req, res) => {
 
 app.get('/api/grudge/:id', (req, res) => {
   const id = req.params.id
-  let scumbag = app.locals.grudges.filter((m) => {
-    return m.id == id
-  })
+  let scumbag = helpers.findGrudge(id, app.locals.grudges)
   res.status(200).json(scumbag[0])
 })
 
 app.patch('/api/grudge/:id', (req, res) => {
   const id = req.params.id
   const newForgiven = req.body.forgivenStatus
-  app.locals.grudges = changeForgivenStatus(id, newForgiven)
-  let changedGrudge = app.locals.grudges.filter((m) => {
-    return m.id == id
-  })
+  app.locals.grudges = helpers.changeForgivenStatus(id, newForgiven, app.locals.grudges)
+  let changedGrudge = helpers.findGrudge(id, app.locals.grudges)
   res.status(200).json(changedGrudge)
 })
-
-function changeForgivenStatus(id, newForgiven) {
-  app.locals.grudges = app.locals.grudges.map((m) => {
-    if (m.id == id) {
-      m.forgiven = newForgiven
-      return m
-    } else {
-      return m
-    }
-  })
-  return app.locals.grudges
-}
 
 var server = app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is runnning on ${app.get('port')}`)
