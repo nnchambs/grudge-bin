@@ -22,7 +22,7 @@ $('.grudge-submit').click('click', (e) => {
 })
 
 $('.sort-scumbag-by-date').click(() => {
-  sortByDate()
+  sortByDate(localGrudges)
 })
 
 $('.sort-scumbag-by-name').click(() => {
@@ -32,11 +32,6 @@ $('.sort-scumbag-by-name').click(() => {
 $('.grudge-list').on('click', '.scumbag-name', function() {
   updateDom(localGrudges)
   getIndividualScumbag(this.id)
-})
-
-$('.sort-scumbag-by-date').click(function() {
-  sortByDate(localGrudges)
-  updateDom(localGrudges)
 })
 
 $('.individual-scumbag-container').on('click', '.forgive', function() {
@@ -115,22 +110,23 @@ function updateForgivenCounter(grudges) {
 }
 
 function appendGrudgeList(grudges) {
-  console.log(grudges)
   grudges.map((g) => {
     $('.grudge-list').append(`<h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
   })
 }
 
 function sortByDate() {
-  return localGrudges.sort((a, b) => {
+  let sortedByDate = localGrudges.sort((a, b) => {
     return a.date > b.date
   })
+  updateDom(sortedByDate)
 }
 
 function sortByName() {
-  return localGrudges.sort((a, b) => {
+  let sortedByName = localGrudges.sort((a, b) => {
     return a.name.toLowerCase() > b.name.toLowerCase()
   })
+  updateDom(sortedByName)
 }
 
 function getIndividualScumbag(id) {
