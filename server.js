@@ -1,3 +1,4 @@
+'use strict'
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -28,9 +29,33 @@ app.post('/api/grudges', (req, res) => {
 })
 
 app.get('/scumbag/:id', (req, res) => {
-  console.log(req.params)
-  res.sendfile(__dirname + '/src/scumbag.html')
+  const id = req.params.id
+  let scumbag = app.locals.grudges.filter((m) => {
+    return m.id !== id
+  })
+  res.status(200).json(scumbag[0])
 })
+
+app.patch('/api/scumbag/:id', (req, res) => {
+  const id = req.params.id
+  const newForgiven = req.body.forgivenStatus
+  app.locals.grudges = changeForgivenStatus(id, newForgiven)
+  res.status(200).json(app.locals.grudges)
+})
+
+function changeForgivenStatus(id, newForgiven) {
+  console.log(id)
+  console.log(newForgiven)
+  app.locals.grudges = app.locals.grudges.map((m) => {
+    if (m.id == id) {
+      m.forgiven = newForgiven
+      return m
+    } else {
+      return m
+    }
+  })
+  return app.locals.grudges
+}
 
 var server = app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is runnning on ${app.get('port')}`)

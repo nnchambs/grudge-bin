@@ -30,7 +30,15 @@ $('.sort-scumbag-by-name').click(() => {
 })
 
 $('.grudge-list').on('click', '.scumbag-name', function() {
-  routeToIndividualScumbag(this.id)
+  getIndividualScumbag(this.id)
+})
+
+$('.individual-scumbag-container').on('click', '.forgive', function() {
+  let id = $(this).parent().attr('id')
+  let forgivenStatus = $(this).parent().attr('class')
+  let newForgivenStatus = changeForgivenStatus(forgivenStatus)
+  console.log(newForgivenStatus)
+  patchForgivenStatus(id, newForgivenStatus)
 })
 
 //functions
@@ -89,7 +97,7 @@ function appendGrudgeList(grudges) {
   updateUnforgivenCounter(grudges)
   updateForgivenCounter(grudges)
   grudges.map((g) => {
-    $('.grudge-list').append(`<a href='/scumbag/${g.id}'><h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
+    $('.grudge-list').append(`<h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
   })
 }
 
@@ -105,8 +113,34 @@ function sortByName() {
   })
 }
 
-function routeToIndividualScumbag(id) {
-  $.get(`/scumbag/${id}`, (req, res) => {
-    console.log(res)
+function getIndividualScumbag(id) {
+  console.log('get', id)
+  $.get(`/scumbag/${id}`, (scumbag) => {
+    appendIndividualScumbag(scumbag)
+  })
+}
+
+function appendIndividualScumbag(scumbag) {
+  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h1>${scumbag.name}</h1><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
+}
+
+function changeForgivenStatus(forgivenStatus) {
+  if (forgivenStatus === 'false') {
+    return forgivenStatus = 'true'
+  } else if (forgivenStatus === 'true') {
+    return forgivenStatus = 'false'
+  }
+  return forgivenStatus
+}
+
+function patchForgivenStatus(id, forgivenStatus) {
+  $.ajax(
+    {
+      url: `/api/scumbag/${id}`,
+      type: 'PATCH',
+      data: {forgivenStatus: forgivenStatus},
+      success: function(response) {
+        console.log(response)
+      }
   })
 }
