@@ -6,3 +6,7 @@ h1 {
   margin-left: 25%;
   display: inline-block;
 }
+
+input {
+  display: block;
+}

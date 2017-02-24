@@ -7,7 +7,7 @@ var server = require('../server.js');
 
 chai.use(chaiHttp)
 
-describe('the grudge bin routes', function() {
+describe('grudge bin routes', function() {
   it('the GET route should return grudges via app.locals.grudges', function(done) {
     chai.request(server)
     .get('/api/grudges')
@@ -15,6 +15,7 @@ describe('the grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
+      res.body.length.should.equal(1)
       done()
     })
   });
@@ -32,6 +33,33 @@ describe('the grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
+      res.body.length.should.equal(2)
+      done()
+    })
+  });
+
+  xit('the PATCH route should allow a grudge to have its forgivenStatus changed and return app.locals.grudges', function(done) {
+    chai.request(server)
+    .patch('/api/grudge/1')
+    .field('_method', 'patch')
+    .field('forgivenStatus', 'true')
+    .end(function(err, res) {
+      res.should.have.status(200)
+      res.should.be.json;
+      res.body.should.be.a('array');
+      res.body.length.should.equal(1)
+      done()
+    })
+  });
+
+  it('the GET route should respond with a single grudge', function(done) {
+    chai.request(server)
+    .get('/api/grudge/1')
+    .end(function(err, res) {
+      res.should.have.status(200)
+      res.should.be.json;
+      res.body.should.be.a('object');
+      res.body.name.should.equal('Andrew Crist')
       done()
     })
   });
