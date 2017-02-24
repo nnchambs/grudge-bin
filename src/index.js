@@ -54,9 +54,9 @@ function getGrudges() {
 function postGrudge(grudge) {
   $.post('/api/grudges', grudge, (grudges) => {
     let newGrudge = grudges.pop()
-      localGrudges.push(newGrudge)
-    })
-  updateDom(localGrudges)
+    localGrudges.push(newGrudge)
+    updateDom(localGrudges)
+  })
 }
 
 
