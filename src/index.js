@@ -34,6 +34,11 @@ $('.grudge-list').on('click', '.scumbag-name', function() {
   getIndividualScumbag(this.id)
 })
 
+$('.sort-scumbag-by-date').click(function() {
+  sortByDate(localGrudges)
+  updateDom(localGrudges)
+})
+
 $('.individual-scumbag-container').on('click', '.forgive', function() {
   let id = $(this).parent().attr('id')
   let forgivenStatus = $(this).parent().attr('class')
@@ -42,7 +47,7 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
   updateDom(localGrudges)
 })
 
-//functions
+//async functions
 function getGrudges() {
   $.get('/api/grudges', (grudges) => {
     grudges.forEach((g) => {
@@ -60,7 +65,20 @@ function postGrudge(grudge) {
   })
 }
 
-
+// function patchForgivenStatus(id, forgivenStatus) {
+//   $.ajax(
+//     {
+//       url: `/api/grudge/${id}`,
+//       type: 'PATCH',
+//       data: {forgivenStatus: forgivenStatus},
+//       success: function(response) {
+//         response.forEach((g) => {
+//           .push(g)
+//         })
+//       }
+//   })
+// }
+//functions
 function createGrudge() {
   let name = $('.grudge-name').val()
   let description = $('.grudge-description').val()
@@ -97,6 +115,7 @@ function updateForgivenCounter(grudges) {
 }
 
 function appendGrudgeList(grudges) {
+  console.log(grudges)
   grudges.map((g) => {
     $('.grudge-list').append(`<h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
   })
@@ -121,7 +140,7 @@ function getIndividualScumbag(id) {
 }
 
 function appendIndividualScumbag(scumbag) {
-  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h1>${scumbag.name}</h1><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
+  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
 }
 
 function removeGrudgeFromLocalGrudges(id) {
@@ -141,20 +160,6 @@ function changeForgivenStatus(forgivenStatus) {
   }
   return forgivenStatus
 }
-
-// function patchForgivenStatus(id, forgivenStatus) {
-//   $.ajax(
-//     {
-//       url: `/api/grudge/${id}`,
-//       type: 'PATCH',
-//       data: {forgivenStatus: forgivenStatus},
-//       success: function(response) {
-//         response.forEach((g) => {
-//           .push(g)
-//         })
-//       }
-//   })
-// }
 
 function updateDom(grudges) {
   clearGrudgeList()
