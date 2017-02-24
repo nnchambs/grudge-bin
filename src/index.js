@@ -22,7 +22,7 @@ $('.grudge-submit').click('click', (e) => {
 })
 
 $('.sort-scumbag-by-date').click(() => {
-  sortByDate(localGrudges)
+  sortByDate()
 })
 
 $('.sort-scumbag-by-name').click(() => {
@@ -39,7 +39,6 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
   let forgivenStatus = $(this).parent().attr('class')
   let newForgivenStatus = changeForgivenStatus(forgivenStatus)
   patchForgivenStatus(id, newForgivenStatus)
-  updateDom(localGrudges)
 })
 
 //async functions
@@ -67,7 +66,8 @@ function patchForgivenStatus(id, forgivenStatus) {
       type: 'PATCH',
       data: {forgivenStatus: forgivenStatus},
       success: function(response) {
-        findIndividualGrudge(response)
+        let updated = changeIndividualForgiven(response)
+        updateDom(updated)
       }
   })
 }
@@ -94,14 +94,14 @@ function updateCounter(grudges) {
 
 function updateUnforgivenCounter(grudges) {
   let unforgiven = grudges.filter((g) => {
-    if (g.forgiven !== true) return g
+    if (g.forgiven !== 'true') return g
   })
   $('.scumbag-unforgiven-counter').text(unforgiven.length)
 }
 
 function updateForgivenCounter(grudges) {
   let forgiven = grudges.filter((g) => {
-    if (g.forgiven == true) return g
+    if (g.forgiven == 'true') return g
   })
   let counter = forgiven.length ? forgiven.length : 0
   $('.scumbag-forgiven-counter').text(counter)
@@ -137,9 +137,9 @@ function appendIndividualScumbag(scumbag) {
   $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
 }
 
-function findIndividualGrudge(grudge) {
+function changeIndividualForgiven(grudge) {
   let newGrudge = grudge.pop()
-  localGrudges.map((m) => {
+  return localGrudges.map((m) => {
     if (newGrudge.id == m.id) {
       m.forgiven = newGrudge.forgiven
       return m
@@ -147,6 +147,7 @@ function findIndividualGrudge(grudge) {
       return m
     }
   })
+
 }
 
 function changeForgivenStatus(forgivenStatus) {
