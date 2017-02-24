@@ -15,7 +15,7 @@ describe('grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
-      res.body.length.should.equal(1)
+      res.body.length.should.equal(3)
       done()
     })
   });
@@ -33,12 +33,12 @@ describe('grudge bin routes', function() {
       res.should.have.status(200)
       res.should.be.json;
       res.body.should.be.a('array');
-      res.body.length.should.equal(2)
+      res.body.length.should.equal(4)
       done()
     })
   });
 
-  xit('the PATCH route should allow a grudge to have its forgivenStatus changed and return app.locals.grudges', function(done) {
+  it('the PATCH route should allow a grudge to have its forgivenStatus changed and return app.locals.grudges', function(done) {
     chai.request(server)
     .patch('/api/grudge/1')
     .field('_method', 'patch')

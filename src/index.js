@@ -30,6 +30,7 @@ $('.sort-scumbag-by-name').click(() => {
 })
 
 $('.grudge-list').on('click', '.scumbag-name', function() {
+  updateDom(localGrudges)
   getIndividualScumbag(this.id)
 })
 
@@ -38,10 +39,9 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
   let forgivenStatus = $(this).parent().attr('class')
   let newForgivenStatus = changeForgivenStatus(forgivenStatus)
   patchForgivenStatus(id, newForgivenStatus)
-  updateDom(localGrudges)
 })
 
-//functions
+//async functions
 function getGrudges() {
   $.get('/api/grudges', (grudges) => {
     grudges.forEach((g) => {
@@ -54,12 +54,24 @@ function getGrudges() {
 function postGrudge(grudge) {
   $.post('/api/grudges', grudge, (grudges) => {
     let newGrudge = grudges.pop()
-      localGrudges.push(newGrudge)
-    })
-  updateDom(localGrudges)
+    localGrudges.push(newGrudge)
+    updateDom(localGrudges)
+  })
 }
 
-
+function patchForgivenStatus(id, forgivenStatus) {
+  $.ajax(
+    {
+      url: `/api/grudge/${id}`,
+      type: 'PATCH',
+      data: {forgivenStatus: forgivenStatus},
+      success: function(response) {
+        let updated = changeIndividualForgiven(response)
+        updateDom(updated)
+      }
+  })
+}
+//functions
 function createGrudge() {
   let name = $('.grudge-name').val()
   let description = $('.grudge-description').val()
@@ -71,6 +83,10 @@ function clearGrudgeList() {
   $('.grudge-list').empty()
 }
 
+function clearIndividualGrudgeDisplay() {
+  $('.individual-scumbag-container').empty()
+}
+
 function updateCounter(grudges) {
   const counter = grudges.length
   $('.scumbag-counter').text(counter)
@@ -78,14 +94,14 @@ function updateCounter(grudges) {
 
 function updateUnforgivenCounter(grudges) {
   let unforgiven = grudges.filter((g) => {
-    if (g.forgiven !== true) return g
+    if (g.forgiven !== 'true') return g
   })
   $('.scumbag-unforgiven-counter').text(unforgiven.length)
 }
 
 function updateForgivenCounter(grudges) {
   let forgiven = grudges.filter((g) => {
-    if (g.forgiven == true) return g
+    if (g.forgiven == 'true') return g
   })
   let counter = forgiven.length ? forgiven.length : 0
   $('.scumbag-forgiven-counter').text(counter)
@@ -98,15 +114,17 @@ function appendGrudgeList(grudges) {
 }
 
 function sortByDate() {
-  return localGrudges.sort((a, b) => {
+  let sortedByDate = localGrudges.sort((a, b) => {
     return a.date > b.date
   })
+  updateDom(sortedByDate)
 }
 
 function sortByName() {
-  return localGrudges.sort((a, b) => {
+  let sortedByName = localGrudges.sort((a, b) => {
     return a.name.toLowerCase() > b.name.toLowerCase()
   })
+  updateDom(sortedByName)
 }
 
 function getIndividualScumbag(id) {
@@ -116,16 +134,20 @@ function getIndividualScumbag(id) {
 }
 
 function appendIndividualScumbag(scumbag) {
-  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h1>${scumbag.name}</h1><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
+  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
 }
 
-function removeGrudgeFromLocalGrudges(id) {
-  localGrudges.map((m) => {
-    if(m.id == id) {
-      let index = localGrudges.indexOf(m)
-      return localGrudges.slice(index, 1)
+function changeIndividualForgiven(grudge) {
+  let newGrudge = grudge.pop()
+  return localGrudges.map((m) => {
+    if (newGrudge.id == m.id) {
+      m.forgiven = newGrudge.forgiven
+      return m
+    } else {
+      return m
     }
   })
+
 }
 
 function changeForgivenStatus(forgivenStatus) {
@@ -137,22 +159,9 @@ function changeForgivenStatus(forgivenStatus) {
   return forgivenStatus
 }
 
-// function patchForgivenStatus(id, forgivenStatus) {
-//   $.ajax(
-//     {
-//       url: `/api/grudge/${id}`,
-//       type: 'PATCH',
-//       data: {forgivenStatus: forgivenStatus},
-//       success: function(response) {
-//         response.forEach((g) => {
-//           .push(g)
-//         })
-//       }
-//   })
-// }
-
 function updateDom(grudges) {
   clearGrudgeList()
+  clearIndividualGrudgeDisplay()
   appendGrudgeList(grudges)
   updateCounter(grudges)
   updateUnforgivenCounter(grudges)

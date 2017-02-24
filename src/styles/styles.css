@@ -1,5 +1,6 @@
 h1 {
   margin-left: 25%;
+  font-size: 48px;
 }
 
 .grudge-form {
@@ -9,4 +10,32 @@ h1 {
 
 input {
   display: block;
+}
+
+.counter-container {
+  margin-left: 25%;
+  display: inline-block
+}
+
+.button-container {
+  margin-left: 25%;
+  display: inline-block;
+}
+.list-container {
+  margin-left: 25%;
+  display: block;
+}
+
+.true {
+  font-size: 24px;
+  color: black;
+  display: block;
+  margin-left: 25%;
+}
+
+.false {
+  font-size: 24px;
+  color: red;
+  display: block;
+  margin-left: 25%;
 }
