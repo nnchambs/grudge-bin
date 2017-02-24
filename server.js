@@ -28,7 +28,7 @@ app.post('/api/grudges', (req, res) => {
   res.status(200).json(app.locals.grudges)
 })
 
-app.get('/scumbag/:id', (req, res) => {
+app.get('/api/grudge/:id', (req, res) => {
   const id = req.params.id
   let scumbag = app.locals.grudges.filter((m) => {
     return m.id !== id
@@ -36,7 +36,7 @@ app.get('/scumbag/:id', (req, res) => {
   res.status(200).json(scumbag[0])
 })
 
-app.patch('/api/scumbag/:id', (req, res) => {
+app.patch('/api/grudge/:id', (req, res) => {
   const id = req.params.id
   const newForgiven = req.body.forgivenStatus
   app.locals.grudges = changeForgivenStatus(id, newForgiven)
@@ -44,8 +44,6 @@ app.patch('/api/scumbag/:id', (req, res) => {
 })
 
 function changeForgivenStatus(id, newForgiven) {
-  console.log(id)
-  console.log(newForgiven)
   app.locals.grudges = app.locals.grudges.map((m) => {
     if (m.id == id) {
       m.forgiven = newForgiven

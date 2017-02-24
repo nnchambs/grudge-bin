@@ -37,8 +37,8 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
   let id = $(this).parent().attr('id')
   let forgivenStatus = $(this).parent().attr('class')
   let newForgivenStatus = changeForgivenStatus(forgivenStatus)
-  console.log(newForgivenStatus)
   patchForgivenStatus(id, newForgivenStatus)
+  updateDom(localGrudges)
 })
 
 //functions
@@ -47,7 +47,7 @@ function getGrudges() {
     grudges.forEach((g) => {
       localGrudges.push(g)
     })
-    appendGrudgeList(localGrudges)
+    updateDom(localGrudges)
   })
 }
 
@@ -56,7 +56,7 @@ function postGrudge(grudge) {
     let newGrudge = grudges.pop()
       localGrudges.push(newGrudge)
     })
-  appendGrudgeList(localGrudges)
+  updateDom(localGrudges)
 }
 
 
@@ -85,17 +85,13 @@ function updateUnforgivenCounter(grudges) {
 
 function updateForgivenCounter(grudges) {
   let forgiven = grudges.filter((g) => {
-    if (g.forgiven === true) return g
+    if (g.forgiven == true) return g
   })
   let counter = forgiven.length ? forgiven.length : 0
   $('.scumbag-forgiven-counter').text(counter)
 }
 
 function appendGrudgeList(grudges) {
-  clearGrudgeList()
-  updateCounter(grudges)
-  updateUnforgivenCounter(grudges)
-  updateForgivenCounter(grudges)
   grudges.map((g) => {
     $('.grudge-list').append(`<h4 class='scumbag-name'id=${g.id}>${g.name}</h4></a><li>${g.date}</li>`)
   })
@@ -114,14 +110,22 @@ function sortByName() {
 }
 
 function getIndividualScumbag(id) {
-  console.log('get', id)
-  $.get(`/scumbag/${id}`, (scumbag) => {
+  $.get(`api/grudge/${id}`, (scumbag) => {
     appendIndividualScumbag(scumbag)
   })
 }
 
 function appendIndividualScumbag(scumbag) {
   $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h1>${scumbag.name}</h1><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
+}
+
+function removeGrudgeFromLocalGrudges(id) {
+  localGrudges.map((m) => {
+    if(m.id == id) {
+      let index = localGrudges.indexOf(m)
+      return localGrudges.slice(index, 1)
+    }
+  })
 }
 
 function changeForgivenStatus(forgivenStatus) {
@@ -133,14 +137,24 @@ function changeForgivenStatus(forgivenStatus) {
   return forgivenStatus
 }
 
-function patchForgivenStatus(id, forgivenStatus) {
-  $.ajax(
-    {
-      url: `/api/scumbag/${id}`,
-      type: 'PATCH',
-      data: {forgivenStatus: forgivenStatus},
-      success: function(response) {
-        console.log(response)
-      }
-  })
+// function patchForgivenStatus(id, forgivenStatus) {
+//   $.ajax(
+//     {
+//       url: `/api/grudge/${id}`,
+//       type: 'PATCH',
+//       data: {forgivenStatus: forgivenStatus},
+//       success: function(response) {
+//         response.forEach((g) => {
+//           .push(g)
+//         })
+//       }
+//   })
+// }
+
+function updateDom(grudges) {
+  clearGrudgeList()
+  appendGrudgeList(grudges)
+  updateCounter(grudges)
+  updateUnforgivenCounter(grudges)
+  updateForgivenCounter(grudges)
 }
