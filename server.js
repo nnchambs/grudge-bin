@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000)
 
 app.locals.title = 'Grudge-bin Server'
-app.locals.grudges = [{id: 1, name: 'Andrew Crist', offense: 'chowder', forgiven: false, date: '1974-31-01'}]
+app.locals.grudges = [{id: 1, name: 'Andrew Crist', offense: 'chowder', forgiven: false, date: '1974-31-01'}, {id: 2, name: 'Ricky Martin', offense: 'la vida loca', forgiven: false, date: '1999-09-09'}]
 
 app.use(express.static(path.join(__dirname, '/src')))
 
@@ -31,7 +31,7 @@ app.post('/api/grudges', (req, res) => {
 app.get('/api/grudge/:id', (req, res) => {
   const id = req.params.id
   let scumbag = app.locals.grudges.filter((m) => {
-    return m.id !== id
+    return m.id == id
   })
   res.status(200).json(scumbag[0])
 })

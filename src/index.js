@@ -30,6 +30,7 @@ $('.sort-scumbag-by-name').click(() => {
 })
 
 $('.grudge-list').on('click', '.scumbag-name', function() {
+  updateDom(localGrudges)
   getIndividualScumbag(this.id)
 })
 
@@ -69,6 +70,10 @@ function createGrudge() {
 
 function clearGrudgeList() {
   $('.grudge-list').empty()
+}
+
+function clearIndividualGrudgeDisplay() {
+  $('.individual-scumbag-container').empty()
 }
 
 function updateCounter(grudges) {
@@ -153,6 +158,7 @@ function changeForgivenStatus(forgivenStatus) {
 
 function updateDom(grudges) {
   clearGrudgeList()
+  clearIndividualGrudgeDisplay()
   appendGrudgeList(grudges)
   updateCounter(grudges)
   updateUnforgivenCounter(grudges)
