@@ -30,7 +30,7 @@ describe('grudge bin routes', function() {
     .field('forigven', 'false')
     .field('date', '1969-12-31')
     .end(function(err, res) {
-      res.should.have.status(200)
+      res.should.have.status(201)
       res.should.be.json;
       res.body.should.be.a('array');
       res.body.length.should.equal(4)
