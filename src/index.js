@@ -1,3 +1,7 @@
+'use strict'
+
+// var $ = require('jquery');
+
 class Grudge {
   constructor(name, offense, date) {
     this.id = Date.now();
@@ -134,7 +138,7 @@ function getIndividualScumbag(id) {
 }
 
 function appendIndividualScumbag(scumbag) {
-  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
+  $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2 class='scumbag-name'>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
 }
 
 function changeIndividualForgiven(grudge) {
@@ -167,3 +171,9 @@ function updateDom(grudges) {
   updateUnforgivenCounter(grudges)
   updateForgivenCounter(grudges)
 }
+
+// module.exports = {
+//   Grudge,
+//   changeForgivenStatus,
+//   changeIndividualForgiven
+// }

@@ -4,6 +4,7 @@ h1 {
 }
 
 .grudge-form {
+  margin-top: 15px;
   margin-left: 25%;
   display: inline-block;
 }
@@ -13,17 +14,25 @@ input {
 }
 
 .counter-container {
+  display: block;
   margin-left: 25%;
-  display: inline-block
+  margin-top: 20px;
 }
 
 .button-container {
   margin-left: 25%;
+  margin-top: 25px;
   display: inline-block;
 }
 .list-container {
+  margin-top: 25px;
   margin-left: 25%;
   display: block;
+}
+
+.scumbag-name:hover {
+  color: red;
+  cursor: pointer;
 }
 
 .true {
