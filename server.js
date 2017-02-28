@@ -33,7 +33,6 @@ app.post('/api/grudges', (req, res) => {
 
 app.get('/api/grudge/:id', (req, res) => {
   const { id } = req.params
-  console.log(id);
   let scumbag = helpers.findGrudge(id, app.locals.grudges)
   res.status(200).json(scumbag[0])
 })

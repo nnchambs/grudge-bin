@@ -52,7 +52,6 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
 //async functions
 function getGrudges() {
   $.get('/api/grudges', (grudges) => {
-    console.log(grudges);
     grudges.forEach((g) => {
       localGrudges.push(g)
     })
@@ -60,8 +59,13 @@ function getGrudges() {
   })
 }
 
+function getIndividualScumbag(id) {
+  $.get(`/api/grudge/${id}`, (scumbag) => {
+    appendIndividualScumbag(scumbag)
+  })
+}
+
 function postGrudge(grudge) {
-  console.log(grudge);
   $.post('/api/grudges', grudge, (grudges) => {
     let newGrudge = grudges.pop()
     localGrudges.push(newGrudge)
@@ -135,12 +139,6 @@ function sortByName() {
   return sortedByName
 }
 
-function getIndividualScumbag(id) {
-  console.log(id);
-  $.get(`/api/grudge/${id}`, (scumbag) => {
-    appendIndividualScumbag(scumbag)
-  })
-}
 
 function appendIndividualScumbag(scumbag) {
   $('.individual-scumbag-container').append(`<div class=${scumbag.forgiven} id=${scumbag.id}><h2 class='scumbag-name'>${scumbag.name}</h2><li>${scumbag.offense}</li><li>Forgiven : <span>${scumbag.forgiven}</span></li><button class='forgive'>Forgive the scumbag?</button></div>`)
