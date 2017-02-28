@@ -33,7 +33,8 @@ $('.sort-scumbag-by-date').click(() => {
 })
 
 $('.sort-scumbag-by-name').click(() => {
-  sortByName()
+  let sortedByName = sortByName()
+  updateDom(sortedByName)
 })
 
 $('.grudge-list').on('click', '.scumbag-name', function() {
@@ -43,9 +44,8 @@ $('.grudge-list').on('click', '.scumbag-name', function() {
 
 $('.individual-scumbag-container').on('click', '.forgive', function() {
   let id = $(this).parent().attr('id')
-  let forgivenStatus = $(this).parent().attr('class')
-  let newForgivenStatus = changeForgivenStatus(forgivenStatus)
-  patchForgivenStatus(id, newForgivenStatus)
+  let forgivenStatus = JSON.parse($(this).parent().attr('class'))
+  patchForgivenStatus(id, forgivenStatus)
 })
 
 //async functions
@@ -73,9 +73,10 @@ function patchForgivenStatus(id, forgivenStatus) {
     {
       url: `/api/grudge/${id}`,
       type: 'PATCH',
-      data: {forgivenStatus: forgivenStatus},
+      dataType: 'json',
       success: function(response) {
-        let updated = changeIndividualForgiven(response)
+        let responseObj = response.pop()
+        let updated = changeIndividualForgiven(responseObj)
         updateDom(updated)
       }
   })
@@ -130,12 +131,11 @@ function sortByName() {
   let sortedByName = localGrudges.sort((a, b) => {
     return a.name.toLowerCase() > b.name.toLowerCase()
   })
-  updateDom(sortedByName)
+  return sortedByName
 }
 
 function getIndividualScumbag(id) {
-  let stringifyId = JSON.stringify(id)
-  $.get(`api/grudge/${stringifyId}`, (scumbag) => {
+  $.get(`api/grudge/${id}`, (scumbag) => {
     appendIndividualScumbag(scumbag)
   })
 }
@@ -145,25 +145,14 @@ function appendIndividualScumbag(scumbag) {
 }
 
 function changeIndividualForgiven(grudge) {
-  let newGrudge = grudge.pop()
   return localGrudges.map((m) => {
-    if (newGrudge.id == m.id) {
-      m.forgiven = newGrudge.forgiven
+    if (grudge.id === m.id) {
+      m.forgiven = grudge.forgiven
       return m
     } else {
       return m
     }
   })
-
-}
-
-function changeForgivenStatus(forgivenStatus) {
-  if (forgivenStatus === 'false') {
-    return forgivenStatus = 'true'
-  } else if (forgivenStatus === 'true') {
-    return forgivenStatus = 'false'
-  }
-  return forgivenStatus
 }
 
 function updateDom(grudges) {

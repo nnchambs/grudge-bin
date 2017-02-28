@@ -1,8 +1,8 @@
 module.exports = {
-  changeForgivenStatus: function(id, newForgiven, locals) {
+  changeForgivenStatus: function(id, locals) {
     locals = locals.map((m) => {
       if (m.id === JSON.parse(id)) {
-        m.forgiven = newForgiven
+        m.forgiven = true
         return m
       } else {
         return m

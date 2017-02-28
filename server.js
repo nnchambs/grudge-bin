@@ -26,6 +26,7 @@ app.get('/api/grudges', (req, res) => {
 
 app.post('/api/grudges', (req, res) => {
   req.body.forgiven = JSON.parse(req.body.forgiven)
+  req.body.id = JSON.parse(req.body.id)
   app.locals.grudges.push(req.body)
   res.status(200).json(app.locals.grudges)
 })
@@ -37,9 +38,8 @@ app.get('/api/grudge/:id', (req, res) => {
 })
 
 app.patch('/api/grudge/:id', (req, res) => {
-  const id = req.params.id
-  const newForgiven = req.body.forgivenStatus
-  app.locals.grudges = helpers.changeForgivenStatus(id, newForgiven, app.locals.grudges)
+  const { id } = req.params
+  app.locals.grudges = helpers.changeForgivenStatus(id, app.locals.grudges)
   let changedGrudge = helpers.findGrudge(id, app.locals.grudges)
   res.status(200).json(changedGrudge)
 })
