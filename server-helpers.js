@@ -1,7 +1,7 @@
 module.exports = {
   changeForgivenStatus: function(id, newForgiven, locals) {
     locals = locals.map((m) => {
-      if (m.id == id) {
+      if (m.id === JSON.parse(id)) {
         m.forgiven = newForgiven
         return m
       } else {
@@ -13,7 +13,7 @@ module.exports = {
 
   findGrudge: function(id, locals) {
     return locals.filter((m) => {
-    return m.id == id
+    return m.id === JSON.parse(id)
     })
   }
 }

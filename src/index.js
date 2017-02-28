@@ -15,13 +15,16 @@ class Grudge {
 const localGrudges = []
 
 //listeners
-$(document).ready(() => {
+window.onload = function() {
   getGrudges()
-});
+};
 
 $('.grudge-submit').click('click', (e) => {
   e.preventDefault()
-  const newGrudge = createGrudge()
+  let name = $('.grudge-name').val()
+  let description = $('.grudge-description').val()
+  let date = $('.grudge-date').val()
+  const newGrudge = createGrudge(name, description, date)
   postGrudge(newGrudge)
 })
 
@@ -48,6 +51,7 @@ $('.individual-scumbag-container').on('click', '.forgive', function() {
 //async functions
 function getGrudges() {
   $.get('/api/grudges', (grudges) => {
+    console.log(grudges);
     grudges.forEach((g) => {
       localGrudges.push(g)
     })
@@ -56,6 +60,7 @@ function getGrudges() {
 }
 
 function postGrudge(grudge) {
+  console.log(grudge);
   $.post('/api/grudges', grudge, (grudges) => {
     let newGrudge = grudges.pop()
     localGrudges.push(newGrudge)
@@ -76,10 +81,7 @@ function patchForgivenStatus(id, forgivenStatus) {
   })
 }
 //functions
-function createGrudge() {
-  let name = $('.grudge-name').val()
-  let description = $('.grudge-description').val()
-  let date = $('.grudge-date').val()
+function createGrudge(name, description, date) {
   return new Grudge(name, description, date)
 }
 
@@ -132,7 +134,8 @@ function sortByName() {
 }
 
 function getIndividualScumbag(id) {
-  $.get(`api/grudge/${id}`, (scumbag) => {
+  let stringifyId = JSON.stringify(id)
+  $.get(`api/grudge/${stringifyId}`, (scumbag) => {
     appendIndividualScumbag(scumbag)
   })
 }
@@ -171,9 +174,3 @@ function updateDom(grudges) {
   updateUnforgivenCounter(grudges)
   updateForgivenCounter(grudges)
 }
-
-// module.exports = {
-//   Grudge,
-//   changeForgivenStatus,
-//   changeIndividualForgiven
-// }

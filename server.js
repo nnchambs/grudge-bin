@@ -25,6 +25,7 @@ app.get('/api/grudges', (req, res) => {
 })
 
 app.post('/api/grudges', (req, res) => {
+  req.body.forgiven = JSON.parse(req.body.forgiven)
   app.locals.grudges.push(req.body)
   res.status(200).json(app.locals.grudges)
 })

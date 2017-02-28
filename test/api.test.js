@@ -38,16 +38,16 @@ describe('grudge bin routes', function() {
     })
   });
 
-  it('the PATCH route should allow a grudge to have its forgivenStatus changed and return app.locals.grudges', function(done) {
+
+
+  it('the PATCH route should return an empty array when given a nonexistent id', function(done) {
     chai.request(server)
-    .patch('/api/grudge/1')
+    .patch('/api/grudge/999')
     .field('_method', 'patch')
     .field('forgivenStatus', 'true')
     .end(function(err, res) {
       res.should.have.status(200)
-      res.should.be.json;
-      res.body.should.be.a('array');
-      res.body.length.should.equal(1)
+      res.body.length.should.equal(0)
       done()
     })
   });
@@ -60,6 +60,15 @@ describe('grudge bin routes', function() {
       res.should.be.json;
       res.body.should.be.a('object');
       res.body.name.should.equal('Andrew Crist')
+      done()
+    })
+  });
+
+  xit('the GET route should respond with an error if the requested grudge is not found', function(done) {
+    chai.request(server)
+    .get('/api/grudge/999')
+    .end(function(err, res) {
+      res.should.have.status(404);
       done()
     })
   });
