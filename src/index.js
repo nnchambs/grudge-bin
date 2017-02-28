@@ -29,7 +29,8 @@ $('.grudge-submit').click('click', (e) => {
 })
 
 $('.sort-scumbag-by-date').click(() => {
-  sortByDate()
+  let sosrtedByDate = sortByDate()
+  updateDom(sortedByDate)
 })
 
 $('.sort-scumbag-by-name').click(() => {
@@ -124,7 +125,7 @@ function sortByDate() {
   let sortedByDate = localGrudges.sort((a, b) => {
     return a.date > b.date
   })
-  updateDom(sortedByDate)
+  return sortedByDate
 }
 
 function sortByName() {
@@ -135,7 +136,8 @@ function sortByName() {
 }
 
 function getIndividualScumbag(id) {
-  $.get(`api/grudge/${id}`, (scumbag) => {
+  console.log(id);
+  $.get(`/api/grudge/${id}`, (scumbag) => {
     appendIndividualScumbag(scumbag)
   })
 }

@@ -13,7 +13,7 @@ module.exports = {
 
   findGrudge: function(id, locals) {
     return locals.filter((m) => {
-    return m.id === JSON.parse(id)
+    return m.id === id
     })
   }
 }

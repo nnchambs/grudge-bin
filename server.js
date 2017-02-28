@@ -25,14 +25,15 @@ app.get('/api/grudges', (req, res) => {
 })
 
 app.post('/api/grudges', (req, res) => {
-  req.body.forgiven = JSON.parse(req.body.forgiven)
-  req.body.id = JSON.parse(req.body.id)
+  req.body.forgiven = req.body.forgiven
+  req.body.id = req.body.id
   app.locals.grudges.push(req.body)
   res.status(200).json(app.locals.grudges)
 })
 
 app.get('/api/grudge/:id', (req, res) => {
-  const id = req.params.id
+  const { id } = req.params
+  console.log(id);
   let scumbag = helpers.findGrudge(id, app.locals.grudges)
   res.status(200).json(scumbag[0])
 })

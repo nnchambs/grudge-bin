@@ -17,7 +17,7 @@ describe('helper functions', function() {
 
   it('the checkForgivenStatus should change the forgiven status of the grudge to the opposite of what it previously was', function() {
   var newArray = [{id: 1, name: 'Andrew Crist', offense: 'chowder', forgiven: true, date: '1974-31-01'}, {id: 2, name: 'Ricky Martin', offense: 'la vida loca', forgiven: false, date: '1999-09-09'}, {id: 3, name: 'Matt Kaufman', offense: 'sphongle', forgiven: true, date: '2012-08-31'}]
-  var a = helpers.changeForgivenStatus(1, true, grudges)
+  var a = helpers.changeForgivenStatus(1, grudges)
   expect(a[0].forgiven).to.equal(newArray[0].forgiven)
   })
 });
