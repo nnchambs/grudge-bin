@@ -29,7 +29,7 @@ $('.grudge-submit').click('click', (e) => {
 })
 
 $('.sort-scumbag-by-date').click(() => {
-  let sosrtedByDate = sortByDate()
+  let sortedByDate = sortByDate()
   updateDom(sortedByDate)
 })
 
